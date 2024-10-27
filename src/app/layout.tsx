@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import NavBar from "@/components/NavBar";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/toaster";
+import "react-loading-skeleton/dist/skeleton.css";
+import "simplebar-react/dist/simplebar.min.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
