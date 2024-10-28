@@ -88,24 +88,3 @@ export const ourFileRouter = {
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
-
-const axios = require("axios");
-
-async function generateGeminiEmbedding(text: string) {
-  try {
-    const response = await axios.post("https://api.gemini.com/embedding", {
-      headers: {
-        Authorization: `Bearer ${process.env.GEMINI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      data: {
-        input: text,
-      },
-    });
-
-    return response.data.embedding; // Assuming `embedding` holds the vector result.
-  } catch (error) {
-    console.error("Error generating embedding:", error);
-    throw error;
-  }
-}
