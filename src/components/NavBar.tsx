@@ -1,17 +1,16 @@
-"use client";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
-import { usePathname } from "next/navigation";
 import {
+  getKindeServerSession,
   LoginLink,
   RegisterLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
+} from "@kinde-oss/kinde-auth-nextjs/server";
 
-const NavBar = () => {
-  const pathname = usePathname();
-  if (pathname == "/signin") return null;
+const NavBar = async () => {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
   return (
     <nav className="sticky h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
@@ -20,33 +19,44 @@ const NavBar = () => {
             PandaDoc
           </Link>
           <div className="hidden items-center space-x-4 sm:flex">
-            <>
+            {!user ? (
+              <>
+                <Link
+                  href={""}
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "sm",
+                  })}
+                >
+                  Pricing
+                </Link>
+                <LoginLink
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "sm",
+                  })}
+                >
+                  Sign in
+                </LoginLink>
+                <RegisterLink
+                  className={buttonVariants({
+                    variant: "default",
+                    size: "sm",
+                  })}
+                >
+                  Get Started <ArrowRight className="ml-1.5 w-5 h-5" />
+                </RegisterLink>
+              </>
+            ) : (
               <Link
-                href={""}
+                href="/dashboard"
                 className={buttonVariants({
-                  variant: "ghost",
                   size: "sm",
                 })}
               >
-                Pricing
+                Dashboard
               </Link>
-              <LoginLink
-                className={buttonVariants({
-                  variant: "ghost",
-                  size: "sm",
-                })}
-              >
-                Sign in
-              </LoginLink>
-              <RegisterLink
-                className={buttonVariants({
-                  variant: "default",
-                  size: "sm",
-                })}
-              >
-                Get Started <ArrowRight className="ml-1.5 w-5 h-5" />
-              </RegisterLink>
-            </>
+            )}
           </div>
         </div>
       </MaxWidthWrapper>
